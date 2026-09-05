@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] · SupportFlow</title>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container nav-shell">
+                <a class="navbar-brand" asp-area="" asp-page="/Index"><span>SF</span> SupportFlow</a>
+                    <ul class="navbar-nav primary-nav">
+                        <li class="nav-item"><a class="nav-link" asp-page="/Index">Dashboard</a></li>
+                        @if (User.Identity?.IsAuthenticated ?? false)
+                        {
+                            <li class="nav-item"><a class="nav-link" asp-page="/Tickets">Tickets</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-page="/AccessRequests">ERP Access</a></li>
+                            @if (User.IsInRole("IT Support") || User.IsInRole("Admin"))
+                            {
+                                <li class="nav-item"><a class="nav-link" asp-page="/Assets">Assets</a></li>
+                                <li class="nav-item"><a class="nav-link" asp-page="/Audit">Audit</a></li>
+                            }
+                        }
+                    </ul>
+                <partial name="_LoginPartial" />
+            </div>
+        </nav>
+    </header>
+    <div class="container content-shell">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            SupportFlow · Synthetic demo data only · Built with ASP.NET Core and SQLite
+        </div>
+    </footer>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

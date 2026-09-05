@@ -1,0 +1,28 @@
+@page
+@model AssetsModel
+@using SupportFlow.Models
+@{ ViewData["Title"] = "Assets"; }
+
+<div class="page-heading"><div><span class="eyebrow">INVENTORY</span><h1>Company assets</h1></div></div>
+@if (TempData["Message"] is string message) { <div class="alert alert-success">@message</div> }
+
+<details class="panel form-panel"><summary class="btn btn-primary">Add asset</summary>
+    <h2>Add an asset</h2>
+    <form method="post" asp-page-handler="Create">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-grid">
+            <div><label asp-for="Input.AssetTag"></label><input asp-for="Input.AssetTag" class="form-control" /><span asp-validation-for="Input.AssetTag" class="text-danger"></span></div>
+            <div><label asp-for="Input.Type"></label><select asp-for="Input.Type" class="form-select"><option>Laptop</option><option>Desktop</option><option>Printer</option><option>Mobile</option></select></div>
+            <div><label asp-for="Input.Model"></label><input asp-for="Input.Model" class="form-control" /><span asp-validation-for="Input.Model" class="text-danger"></span></div>
+            <div><label asp-for="Input.Status"></label><select asp-for="Input.Status" asp-items="Html.GetEnumSelectList<AssetStatus>()" class="form-select"></select></div>
+            <div><label asp-for="Input.AssignedTo"></label><input asp-for="Input.AssignedTo" class="form-control" /></div>
+            <div><label asp-for="Input.Department"></label><input asp-for="Input.Department" class="form-control" /></div>
+        </div>
+        <button class="btn btn-primary mt-3">Save asset</button>
+    </form>
+</details>
+
+<section class="panel"><div class="table-responsive"><table class="table align-middle mb-0">
+    <thead><tr><th>Asset</th><th>Type / model</th><th>Assigned to</th><th>Department</th><th>Status</th></tr></thead>
+    <tbody>@foreach (var asset in Model.Assets) { <tr><td><strong>@asset.AssetTag</strong></td><td>@asset.Type<small>@asset.Model</small></td><td>@asset.AssignedTo</td><td>@asset.Department</td><td><span class="status">@asset.Status</span></td></tr> }</tbody>
+</table></div></section>

@@ -1,0 +1,53 @@
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+@if (!(User.Identity?.IsAuthenticated ?? false))
+{
+    <section class="hero">
+        <span class="eyebrow">IT SERVICE DESK + ERP ACCESS</span>
+        <h1>One clear workflow for everyday IT operations.</h1>
+        <p>SupportFlow is a portfolio-ready demo for handling support tickets, company assets, ERP access approvals, and audit history.</p>
+        <a class="btn btn-primary btn-lg" asp-area="Identity" asp-page="/Account/Login">Open the demo</a>
+    </section>
+    <section class="demo-panel">
+        <h2>Demo accounts</h2>
+        <p>All accounts use password <code>Demo123!</code></p>
+        <div class="table-responsive">
+            <table class="table mb-0">
+                <thead><tr><th>Role</th><th>Email</th><th>What to try</th></tr></thead>
+                <tbody>
+                    <tr><td>Employee</td><td>employee@supportflow.local</td><td>Create a ticket or ERP request</td></tr>
+                    <tr><td>IT Support</td><td>support@supportflow.local</td><td>Process tickets and assets</td></tr>
+                    <tr><td>Manager</td><td>manager@supportflow.local</td><td>Approve or reject ERP access</td></tr>
+                    <tr><td>Admin</td><td>admin@supportflow.local</td><td>Use every workflow and view the audit log</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+}
+else
+{
+    <div class="page-heading"><div><span class="eyebrow">OPERATIONS OVERVIEW</span><h1>Dashboard</h1></div></div>
+    <div class="metric-grid">
+        <article class="metric"><span>Open tickets</span><strong>@Model.OpenTickets</strong></article>
+        <article class="metric"><span>Active assets</span><strong>@Model.ActiveAssets</strong></article>
+        <article class="metric"><span>Pending ERP access</span><strong>@Model.PendingAccess</strong></article>
+    </div>
+    <section class="panel">
+        <div class="panel-heading"><h2>Recent tickets</h2><a asp-page="/Tickets">View all</a></div>
+        <div class="table-responsive">
+            <table class="table align-middle mb-0">
+                <thead><tr><th>Ticket</th><th>Category</th><th>Priority</th><th>Status</th></tr></thead>
+                <tbody>
+                @foreach (var ticket in Model.RecentTickets)
+                {
+                    <tr><td><strong>#@ticket.Id @ticket.Title</strong><small>@ticket.RequestedByName</small></td><td>@ticket.Category</td><td>@ticket.Priority</td><td><span class="status">@ticket.Status</span></td></tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </section>
+}

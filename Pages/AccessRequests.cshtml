@@ -1,0 +1,39 @@
+@page
+@model AccessRequestsModel
+@using SupportFlow.Models
+@{ ViewData["Title"] = "ERP Access"; }
+
+<div class="page-heading"><div><span class="eyebrow">ACCESS GOVERNANCE</span><h1>ERP access requests</h1></div></div>
+@if (TempData["Message"] is string message) { <div class="alert alert-success">@message</div> }
+
+<details class="panel form-panel"><summary class="btn btn-primary">New request</summary>
+    <h2>Request ERP access</h2>
+    <form method="post" asp-page-handler="Create">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-grid">
+            <div><label asp-for="Input.Module"></label><select asp-for="Input.Module" class="form-select"><option>Inventory</option><option>Purchasing</option><option>Sales</option><option>Accounting</option><option>Human Resources</option></select></div>
+            <div><label asp-for="Input.AccessLevel"></label><select asp-for="Input.AccessLevel" class="form-select"><option>Read</option><option>Edit</option><option>Approve</option></select></div>
+            <div class="wide"><label asp-for="Input.Reason"></label><textarea asp-for="Input.Reason" class="form-control" rows="3"></textarea><span asp-validation-for="Input.Reason" class="text-danger"></span></div>
+        </div>
+        <button class="btn btn-primary mt-3">Submit request</button>
+    </form>
+</details>
+
+<section class="panel"><div class="table-responsive"><table class="table align-middle mb-0">
+    <thead><tr><th>Request</th><th>Requester</th><th>Reason</th><th>Status</th><th>Action</th></tr></thead>
+    <tbody>
+    @foreach (var request in Model.Requests)
+    {
+        <tr><td><strong>#@request.Id @request.Module</strong><small>@request.AccessLevel access</small></td><td>@request.RequestedByName</td><td>@request.Reason</td><td><span class="status">@request.Status</span></td><td>
+            @if (request.Status == AccessRequestStatus.Pending && Model.CanDecide)
+            {
+                <form method="post" asp-page-handler="Move" class="inline-form"><input type="hidden" name="id" value="@request.Id" /><button name="next" value="Approved" class="btn btn-sm btn-outline-primary">Approve</button><button name="next" value="Rejected" class="btn btn-sm btn-outline-danger">Reject</button></form>
+            }
+            else if (request.Status == AccessRequestStatus.Approved && Model.CanFulfill)
+            {
+                <form method="post" asp-page-handler="Move" class="inline-form"><input type="hidden" name="id" value="@request.Id" /><button name="next" value="Fulfilled" class="btn btn-sm btn-outline-primary">Mark fulfilled</button></form>
+            }
+        </td></tr>
+    }
+    </tbody>
+</table></div></section>

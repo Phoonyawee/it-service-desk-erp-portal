@@ -2,6 +2,28 @@
 
 SupportFlow is a compact IT Service Desk and ERP Access Management portfolio project. It demonstrates role-based workflows, validation, asset tracking, and an audit trail with synthetic data only.
 
+## Screenshots
+
+### Operations dashboard
+
+![SupportFlow operations dashboard](docs/screenshots/dashboard.png)
+
+### Support ticket workflow
+
+![SupportFlow support tickets](docs/screenshots/tickets.png)
+
+### ERP access workflow
+
+![SupportFlow ERP access requests](docs/screenshots/erp-access.png)
+
+### Company asset inventory
+
+![SupportFlow company assets](docs/screenshots/assets.png)
+
+### Audit trail
+
+![SupportFlow audit log](docs/screenshots/audit-log.png)
+
 ## Features
 
 - Employees create and follow support tickets.
